@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function ImageUploader() { 
 
@@ -6,29 +6,36 @@ function ImageUploader() {
     const [preview, setPreview] = useState(null);
     const [pixelArray, setPixelArray] = useState([]);
 
-    function handleImageChange(event) { 
+
+    function handleImageUpload(event) { 
+
         const file = event.target.files[0];
         if (file) { 
+
             setImageFile(file);
             const reader = new FileReader();
+            
             reader.onloadend = () => {
                 setPreview(reader.result);
-
-                const img = new Image();
-                img.onload = () => { 
-                    const width = img.naturalWidth;
-                    const height = img.naturalHeight;
-                    const newPixelArray = Array.from({length: width * height}, () => [0, 0, 0]);
-                    setPixelArray(newPixelArray);
-                };
-                img.src = reader.result;
-
             };
             reader.readAsDataURL(file);
         }
     }
 
+    // after image is loaded, create blank array to store pixel noise
+    useEffect(() => { 
 
+        if (preview) {
+            const img = new Image();
+            img.onload = () => { 
+                const width = img.naturalWidth;
+                const height = img.naturalHeight;
+                const newPixelArray = Array.from({length: width * height}, () => [0, 0, 0]);
+                setPixelArray(newPixelArray);
+            }
+            img.src = preview;
+        }
+    }, [preview]);
 
     return (
         <div>
@@ -36,7 +43,7 @@ function ImageUploader() {
             <input 
                 type="file"
                 accept="image/png"
-                onChange={handleImageChange}
+                onChange={handleImageUpload}
             />
             {preview && (
                 <div>
