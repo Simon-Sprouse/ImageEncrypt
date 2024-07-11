@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { stringToBinary } from './logic';
 
 function TextEditor() { 
 
@@ -10,22 +10,13 @@ function TextEditor() {
     }
 
 
-    function stringToBinary(str) {
-        let binaryString = "";
-        for (let i = 0; i < str.length; i++) {
-            let asciiValue = str.charCodeAt(i);
-            let binaryValue = asciiValue.toString(2);
-            let paddedBinaryValue = binaryValue.padStart(7, "0");
-            binaryString += paddedBinaryValue + " "
-        }
-        return binaryString.trim();
-    }
+    
 
     return (
         <div>
             <h2>Text Editor Area</h2>
             <textarea
-
+                id="textEditor"
                 onChange={handleChange}
                 rows="10"
                 cols="50"
