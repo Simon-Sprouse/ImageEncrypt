@@ -10,8 +10,6 @@ function TextEditor() {
     }
 
 
-    
-
     return (
         <div>
             <h2>Text Editor Area</h2>
@@ -26,7 +24,6 @@ function TextEditor() {
             <p id="binary">{stringToBinary(text)}</p>
         </div>
     )
-
 
 
 }

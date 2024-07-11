@@ -1,7 +1,10 @@
-// Les go
+// Lets go
 
 
 export function stringToBinary(str) {
+
+    // TODO: at some point we must check for non-acii characters
+
     let binaryString = "";
     for (let i = 0; i < str.length; i++) {
         let asciiValue = str.charCodeAt(i);
@@ -29,13 +32,13 @@ export function createEncryption(pixelArray, binaryText) {
         let currentChannel;
         let currentBinary;
 
+        // skip over alpha channel, we don't want any transparency
         if (channelIndex % 4 == 3) { 
             newChannelArray.push(pixelArray.at(channelIndex));
             channelIndex += 1;
             remainingChannels -= 1; 
             continue;
         }
-
 
         if (remainingChannels <= 0) { 
             break;
@@ -44,14 +47,12 @@ export function createEncryption(pixelArray, binaryText) {
             break;
         }
 
-
         if (pixelArray.at(channelIndex) > 252) { 
             newChannelArray.push(pixelArray.at(channelIndex));
             channelIndex += 1;
             remainingChannels -= 1;
             continue;
         }
-
 
         currentChannel = pixelArray.at(channelIndex);
         channelIndex += 1;
@@ -81,13 +82,12 @@ export function createEncryption(pixelArray, binaryText) {
             currentChannel += 3;
         }
 
-        // push current Channel
         newChannelArray.push(currentChannel);
         
-
-
         
     }
+
+    // TODO: Mark the end of the text somehow. Maybe not necessary idk 
 
 
     for (let i = channelIndex; i < pixelArray.length; i ++) { 

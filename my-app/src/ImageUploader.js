@@ -7,7 +7,7 @@ Next project is the python Jimi Hendrix thing, spectrogram of the soul
 
 
 
-Ok so here's what the fuck I'm doing here
+Ok so here's what I'm doing here
 
 So I have an array that represents the pixels all in a sequence so heres psuedocode of how to hide text. 
 
@@ -111,42 +111,23 @@ remainingBinary -= 2; // 3
 
 function ImageUploader() { 
 
-    const canvasRef = useRef(null);
+    const canvasRef = useRef(null); // used to manipulate images
 
-    const [imageFile, setImageFile] = useState(null);
-    const [preview, setPreview] = useState(null);
-    const [pixelArray, setPixelArray] = useState([]);
+    const [preview, setPreview] = useState(null);               // stores dataURL to original
+    const [cryptPreview, setCryptPreview] = useState(null);     // stores dataURL to crypt
 
-    const [cryptPixelArray, setCryptPixelArray] = useState([]);
-
-    const [cryptPreview, setCryptPreview] = useState(null);
-
-    function handleButtonClick() { 
-
-        const textArea = document.getElementById("textEditor");
-        const text = textArea.value;
-        const binaryText = stringToBinary(text);
-
-        if (pixelArray.length > 0) { 
-
-            console.log("You now have pixel Array");
-            const newCryptPixelArray = createEncryption(pixelArray, binaryText);
-
-            setCryptPixelArray(newCryptPixelArray);
-
-        }
-
-    }
+    const [pixelArray, setPixelArray] = useState([]);           // stores Uint8ClampedArray orignal
+    const [cryptPixelArray, setCryptPixelArray] = useState([]); // stores Uint8ClampedArray crypt
 
 
+    // handle image upload 
     function handleImageUpload(event) { 
 
-        setCryptPixelArray([]);
+        setCryptPixelArray([]); // wipe out old crypt just in case
 
         const file = event.target.files[0];
         if (file) { 
 
-            setImageFile(file);
             const reader = new FileReader();
 
             reader.onloadend = () => {
@@ -156,6 +137,23 @@ function ImageUploader() {
         }
     }
 
+    // when clicked generates encrypted image
+    function handleButtonClick() { 
+
+        const textArea = document.getElementById("textEditor");
+        const text = textArea.value;
+        const binaryText = stringToBinary(text);
+
+        if (pixelArray.length > 0) { 
+
+            const newCryptPixelArray = createEncryption(pixelArray, binaryText);
+            setCryptPixelArray(newCryptPixelArray);
+
+        }
+
+    }
+
+    // to save crypted images
     function saveCrypt() {
         const link = document.createElement('a');
         link.href = cryptPreview;
@@ -163,7 +161,7 @@ function ImageUploader() {
         link.click();
     }
 
-    // after image is loaded, create blank array to store pixel noise
+    // after image preview is loaded, extract pixel data into state
     useEffect(() => { 
 
         if (preview) {
@@ -182,8 +180,6 @@ function ImageUploader() {
                 ctx.drawImage(img, 0, 0);
                 const imageData = ctx.getImageData(0, 0, width, height);
                 const data = imageData.data;
-
-                // console.log("data: ", data);
 
                 setPixelArray(data);
             }
@@ -205,8 +201,6 @@ function ImageUploader() {
             setCryptPreview(dataURL);
         }
 
-        
-
     }, [cryptPixelArray]);
 
     return (
@@ -219,7 +213,6 @@ function ImageUploader() {
                 accept="image/png"
                 onChange={handleImageUpload}
             />
-
             {preview && (
                 <div>
                     <p>Image Preview:</p>
@@ -227,7 +220,6 @@ function ImageUploader() {
                         src={preview}
                         alt="Image Preview"
                     />
-                
                 </div>
             )}
             {cryptPreview && (
