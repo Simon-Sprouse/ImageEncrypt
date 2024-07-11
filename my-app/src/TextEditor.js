@@ -9,19 +9,30 @@ function TextEditor() {
         setText(event.target.value);
     }
 
+
+    function stringToBinary(str) {
+        let binaryString = "";
+        for (let i = 0; i < str.length; i++) {
+            let asciiValue = str.charCodeAt(i);
+            let binaryValue = asciiValue.toString(2);
+            let paddedBinaryValue = binaryValue.padStart(7, "0");
+            binaryString += paddedBinaryValue + " "
+        }
+        return binaryString.trim();
+    }
+
     return (
         <div>
             <h2>Text Editor Area</h2>
             <textarea
-                value={text}
+
                 onChange={handleChange}
                 rows="10"
                 cols="50"
             />
             <p>Current Text: </p>
-            <div>
-                {text}
-            </div>
+            <p>{text}</p>
+            <p id="binary">{stringToBinary(text)}</p>
         </div>
     )
 
