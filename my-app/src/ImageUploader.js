@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { stringToBinary, createEncryption } from './logic';
 
 /*
+
+Next project is the python Jimi Hendrix thing, spectrogram of the soul
+
+
 
 Ok so here's what the fuck I'm doing here
 
@@ -107,11 +111,15 @@ remainingBinary -= 2; // 3
 
 function ImageUploader() { 
 
+    const canvasRef = useRef(null);
+
     const [imageFile, setImageFile] = useState(null);
     const [preview, setPreview] = useState(null);
     const [pixelArray, setPixelArray] = useState([]);
 
     const [cryptPixelArray, setCryptPixelArray] = useState([]);
+
+    const [cryptPreview, setCryptPreview] = useState(null);
 
     function handleButtonClick() { 
 
@@ -119,21 +127,21 @@ function ImageUploader() {
         const text = textArea.value;
         const binaryText = stringToBinary(text);
 
-        // if (pixelArray.length > 0) { 
+        if (pixelArray.length > 0) { 
 
-        //     console.log("You now have pixel Array");
-        //     createEncryption([100, 120, 90, 255, 30, 120, 80, 255], "0111111");
+            console.log("You now have pixel Array");
+            const newCryptPixelArray = createEncryption(pixelArray, binaryText);
 
-        // }
+            setCryptPixelArray(newCryptPixelArray);
 
-        console.log("You now have pixel Array");
-        createEncryption([100, 120, 90, 255, 30, 120, 80, 255], "0111111");
-
+        }
 
     }
 
 
     function handleImageUpload(event) { 
+
+        setCryptPixelArray([]);
 
         const file = event.target.files[0];
         if (file) { 
@@ -148,6 +156,13 @@ function ImageUploader() {
         }
     }
 
+    function saveCrypt() {
+        const link = document.createElement('a');
+        link.href = cryptPreview;
+        link.download = "crypt_image";
+        link.click();
+    }
+
     // after image is loaded, create blank array to store pixel noise
     useEffect(() => { 
 
@@ -155,7 +170,7 @@ function ImageUploader() {
             const img = new Image();
             img.onload = () => { 
 
-                const canvas = document.createElement("canvas");
+                const canvas = canvasRef.current;
                 const ctx = canvas.getContext("2d");
 
                 const width = img.naturalWidth;
@@ -176,8 +191,27 @@ function ImageUploader() {
         }
     }, [preview]);
 
+
+    // after image is encrypted, display the encrypted image
+    useEffect(() => { 
+
+        if (cryptPixelArray.length > 0) { 
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext("2d");
+            const imageData = new ImageData(new Uint8ClampedArray(cryptPixelArray), canvas.width, canvas.height);
+
+            ctx.putImageData(imageData, 0, 0);
+            const dataURL = canvas.toDataURL();
+            setCryptPreview(dataURL);
+        }
+
+        
+
+    }, [cryptPixelArray]);
+
     return (
         <div>
+            <canvas ref={canvasRef} style={{display: "none"}}></canvas>
             <button onClick={handleButtonClick}>Apply encryption</button>
             <h2>Upload Image</h2>
             <input 
@@ -193,14 +227,17 @@ function ImageUploader() {
                         src={preview}
                         alt="Image Preview"
                     />
-                    <p>Data URL: {preview}</p>
+                
                 </div>
             )}
-            {pixelArray.length > 0 && (
+            {cryptPreview && (
                 <div>
-                    <p>Array with black pixels: </p>
-
-                    <pre>{JSON.stringify(pixelArray, null, 2)}</pre>
+                    <p>Crypt Image Preview:</p>
+                    <img
+                        src={cryptPreview}
+                        alt="Crypt Image Preview"
+                    />
+                    <button onClick={saveCrypt}>Click to Save</button>
                 </div>
             )}
         </div>
