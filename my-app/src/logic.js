@@ -27,12 +27,16 @@ export function binaryToString(bin) {
         }
 
         let asciiValue = parseInt(binaryChunk, 2);
+
+        if (asciiValue < 32 || asciiValue > 126) { 
+            continue; // TODO make this break
+        }
         
 
-        if (asciiValue >= 32 && asciiValue <= 26) { 
-            let char = String.fromCharCode(asciiValue);
-            result += char;
-        }
+
+        let char = String.fromCharCode(asciiValue);
+        result += char;
+
 
     }
 
@@ -195,4 +199,53 @@ export function createDecryption(plainArray, cryptArray) {
 
 
     return binaryText;
+}
+
+
+export function testDecryption(plainArray, cypherArray) {
+
+    const differenceArray = [];
+    let difference;
+
+    for (let i = 0; i < plainArray.length; i++) { 
+        difference = cypherArray.at(i) - plainArray.at(i);
+        differenceArray.push(difference);
+    }
+
+    console.log(differenceArray);
+
+    let outputString = "";
+    let diff;
+
+
+    for (let i = 0; i < differenceArray.length; i++) { 
+        if (i % 4 == 3 || plainArray.at(i) > 252) { 
+            continue;
+        }
+
+        diff = differenceArray.at(i);
+
+        if (diff == 0) { 
+            outputString += "00";
+        }
+        else if (diff == 1) { 
+            outputString += "01";
+        }
+        else if (diff == 2) { 
+            outputString += "10";
+        }
+        else if (diff == 3) { 
+            outputString += "11";
+        }
+        
+    }
+
+    console.log("Output String: ", outputString);
+
+    const plainText = binaryToString(outputString);
+
+    console.log("Plain Text: ", plainText);
+
+    return outputString;
+
 }
