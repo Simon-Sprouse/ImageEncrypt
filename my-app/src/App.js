@@ -1,6 +1,7 @@
 import './App.css';
 import TextEditor from './TextEditor';
 import ImageUploader from './ImageUploader';
+import Decrypt from './Decrypt';
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
         <h1>Image Encrypt</h1>
         <TextEditor />
         <ImageUploader />
+        <Decrypt />
       </header>
     </div>
   );

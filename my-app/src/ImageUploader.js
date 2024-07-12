@@ -101,6 +101,12 @@ remainingBinary -= 2; // 3
 
 
 
+Ok so now I need to create a decyrption algorithm. 
+
+First upload two images.
+
+Then 
+
 
 
 
@@ -224,11 +230,14 @@ function ImageUploader() {
             )}
             {cryptPreview && (
                 <div>
-                    <p>Crypt Image Preview:</p>
-                    <img
-                        src={cryptPreview}
-                        alt="Crypt Image Preview"
-                    />
+                    <div>
+                        <p>Crypt Image Preview:</p>
+                        <img
+                            src={cryptPreview}
+                            alt="Crypt Image Preview"
+                        />
+                        
+                    </div>
                     <button onClick={saveCrypt}>Click to Save</button>
                 </div>
             )}
