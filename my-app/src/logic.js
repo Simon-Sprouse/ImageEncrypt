@@ -207,9 +207,23 @@ export function testDecryption(plainArray, cypherArray) {
     const differenceArray = [];
     let difference;
 
+    let continuousZeroes = 0;
+
     for (let i = 0; i < plainArray.length; i++) { 
         difference = cypherArray.at(i) - plainArray.at(i);
         differenceArray.push(difference);
+
+        if (difference == 0) { 
+            continuousZeroes += 1;
+            if (continuousZeroes > 14) { 
+                break;
+            }
+        }
+        else { 
+            continuousZeroes = 0;
+        }
+
+
     }
 
     console.log(differenceArray);
@@ -240,27 +254,8 @@ export function testDecryption(plainArray, cypherArray) {
         
     }
 
-    console.log("Output String: ", outputString);
-
-    const plainText = binaryToString(outputString);
-
-    console.log("Plain Text: ", plainText);
 
     return outputString;
 
 }
 
-
-export function testConversion() { 
-
-    const orinalString = "Hello there\nI am testing the newline."
-
-    const binaryString = stringToBinary(orinalString);
-
-    const recoveredString = binaryToString(binaryString);
-
-    console.log("Recovered String: ", recoveredString);
-
-    return recoveredString;
-
-}
