@@ -28,8 +28,8 @@ export function binaryToString(bin) {
 
         let asciiValue = parseInt(binaryChunk, 2);
 
-        if (asciiValue < 32 || asciiValue > 126) { 
-            continue; // TODO make this break
+        if (asciiValue == 0) { 
+            break; // TODO make this break
         }
         
 
@@ -247,5 +247,20 @@ export function testDecryption(plainArray, cypherArray) {
     console.log("Plain Text: ", plainText);
 
     return outputString;
+
+}
+
+
+export function testConversion() { 
+
+    const orinalString = "Hello there\nI am testing the newline."
+
+    const binaryString = stringToBinary(orinalString);
+
+    const recoveredString = binaryToString(binaryString);
+
+    console.log("Recovered String: ", recoveredString);
+
+    return recoveredString;
 
 }

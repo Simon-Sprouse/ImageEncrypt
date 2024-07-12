@@ -111,6 +111,20 @@ Then
 
 
 
+LIST OF POTENTIAL PROJECT IMPROVEMENTS:
+
+- handle mutliple file types
+- auto sense how many ascii chars are needed
+- handle non ascii chars
+- handle cases where all the pixels are white
+- come up with a solution that spreads the data evenly through the image
+- find a way to add more data to the image by scaling up the bit shift (right now its only 2 bits per channel)
+- hide the text in multiple locations in the image. 
+- maybe even choose where to hide the text
+
+
+
+
 
 
 */
