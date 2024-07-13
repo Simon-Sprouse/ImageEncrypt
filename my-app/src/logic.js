@@ -33,7 +33,6 @@ export function binaryToString(bin) {
         }
         
 
-
         let char = String.fromCharCode(asciiValue);
         result += char;
 
@@ -133,73 +132,8 @@ export function createEncryption(pixelArray, binaryText) {
 
 
 
-export function createDecryption(plainArray, cryptArray) {
-    console.log("Plain array: ", plainArray);
-    console.log("Crypt array: ", cryptArray);
 
 
-    /*
-    
-    Ok so loop through the orignal image array and follow the same rules
-
-    If a pixel in the orignal image is 252 or greater or alpha, then skip
-    If we reach the end of the image then break
-
-
-    
-    */
-
-
-    // TODO: at some point we will need input validation to make sure both images are the same size
-
-    let binaryText = "";
-    let difference; 
-
-    let continuousZeroes = 0;
-    
-    for (let i = 0; i < plainArray.length; i++) { 
-
-        if (i % 4 == 3) { 
-            continue;
-        }
-
-        if (plainArray.at(i) > 252) { 
-            continue;
-        }
-
-        difference = cryptArray.at(i) - plainArray.at(i);
-
-        if (difference == 0) { 
-            binaryText += "00";
-            continuousZeroes += 1;
-        }
-        else { 
-            continuousZeroes = 0;
-        }
-        
-        if (difference == 1) { 
-            binaryText += "01";
-        }
-        else if (difference == 2) { 
-            binaryText += "10";
-        }
-        else { 
-            binaryText += "11";
-        }
-
-
-        if (continuousZeroes > 14) { 
-            break;
-        }
-
-
-    }
-
-
-
-
-    return binaryText;
-}
 
 
 export function testDecryption(plainArray, cypherArray) {
@@ -226,7 +160,6 @@ export function testDecryption(plainArray, cypherArray) {
 
     }
 
-    console.log(differenceArray);
 
     let outputString = "";
     let diff;

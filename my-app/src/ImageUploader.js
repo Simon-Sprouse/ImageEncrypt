@@ -1,134 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { stringToBinary, createEncryption } from './logic';
 
-/*
 
-Next project is the python Jimi Hendrix thing, spectrogram of the soul
-
-
-
-Ok so here's what I'm doing here
-
-So I have an array that represents the pixels all in a sequence so heres psuedocode of how to hide text. 
-
-First we turn the text into binary. I think ASCII is good, so that means every letter is 7 bits. 
-
-Now I iterate through the pixels array, taking groups of four elements, a group of four represents one pixel. 
-
-So now lets start by encoding one bit as a +1 to any color channel that isn't already at the boundary, boundaries get skipped.
-
-We can encode 2 bits by adding 3 to the color channel:
-    - 00 no change (assuming it's not an ineligible pixel)
-    - 01 + 1
-    - 10 + 2
-    - 11 + 3
-
-252 is now the max to be considered elligible. 
-
-Because modifications to the color channels can happen indepenently, there are now 6 bits encoded in each pixel. 
-
-Ok so now we need to convert the text file into a bitstring of ascii characters. 
-
-Then we can hide the bitstring with an encryption function and retrieve it with a decryption function. 
-
-
-
-
-
-
-Ok this function loops through the pixel array until the binary chars are finished. So maybe a while loop is appropriate here.
-
-The loop will first check if the channel is alpha, if so move to the next pixel. 
-
-Next we check and see how many remaining chars there are. 
-
-If 2 or more remain, we can take two, hide them in the channel, and move to the next channel. 
-
-If only one, we can hide it in the channel, end function. 
-
-If 0, end the function. 
-
-While loop needs to terminate if:
-    - the pixel array runs out of available pixels. 
-    - the binary string is totally encoded.
-
-
-Oh also I need to sign the ending right? 
-
-I will do this by adding in a rare - 1
-
-
-
-
-Example: 
-
-? -- 0111111
-[100, 120, 90, 255, 30, 120, 80, 255]
-
-
-channelIndex: 0
-binaryIndex: 0
-
-remainingChannels: 8
-remainingBinary: 7
-
-first pass: 
-
-currentChannel = pixelArray.at(channelIndex) // 100
-currentBinary = binaryText.substring(binaryIndex, binaryIndex + 2); // 01
-
-currentChannel += 01; // 101
-// push currentChannel to new array
-
-channelIndex += 1; // 1
-binaryIndex += 2; // 2
-remainingChannels -= 1; // 7
-remainingBinary -= 2; // 5
-
-second pass: 
-
-currentChannel = pixelArray.at(channelIndex) // 120
-currentBinary = binaryText.substring(binaryIndex, binaryIndex + 2); // 11
-
-currentChannel += 11; // 123
-// push currentChannel to new array
-
-channelIndex += 1; // 2
-binaryIndex += 2; // 4
-remainingChannels -= 1; // 6
-remainingBinary -= 2; // 3
-
-
-
-
-Ok so now I need to create a decyrption algorithm. 
-
-First upload two images.
-
-Then 
-
-
-
-
-
-LIST OF POTENTIAL PROJECT IMPROVEMENTS:
-
-
-- handle mutliple file types
-- auto sense how many ascii chars are needed
-- handle non ascii chars
-- handle cases where all the pixels are white
-- come up with a solution that spreads the data evenly through the image
-- find a way to add more data to the image by scaling up the bit shift (right now its only 2 bits per channel)
-- hide the text in multiple locations in the image. 
-- maybe even choose where to hide the text
-- maybe even add metadata at the begining of the encyption
-
-
-
-
-
-*/
 
 function ImageUploader() { 
 
@@ -227,7 +100,19 @@ function ImageUploader() {
     return (
         <div>
             <canvas ref={canvasRef} style={{display: "none"}}></canvas>
-            <button onClick={handleButtonClick}>Apply encryption</button>
+
+            <div>
+                <button onClick={handleButtonClick}>Apply Encryption</button>
+            </div>
+            
+
+            <textarea
+                id="textEditor"
+                rows="10"
+                cols="50"
+                placeholder="Enter text here."
+            />
+            
             <h2>Upload Image</h2>
             <input 
                 type="file"
@@ -243,6 +128,7 @@ function ImageUploader() {
                     />
                 </div>
             )}
+            
             {cryptPreview && (
                 <div>
                     <div>
