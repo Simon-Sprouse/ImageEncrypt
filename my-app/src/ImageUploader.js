@@ -110,7 +110,8 @@ function ImageUploader() {
                 id="textEditor"
                 rows="10"
                 cols="50"
-                placeholder="Enter text here."
+                placeholder="Enter text here for encryption."
+                style={{textAlign: "left"}}
             />
             
             <h2>Upload Image</h2>
@@ -119,29 +120,35 @@ function ImageUploader() {
                 accept="image/png"
                 onChange={handleImageUpload}
             />
-            {preview && (
-                <div>
-                    <p>Image Preview:</p>
-                    <img 
-                        src={preview}
-                        alt="Image Preview"
-                    />
-                </div>
-            )}
-            
-            {cryptPreview && (
-                <div>
+
+            <div className="SideBySide">
+                {preview && (
                     <div>
-                        <p>Crypt Image Preview:</p>
-                        <img
-                            src={cryptPreview}
-                            alt="Crypt Image Preview"
+                        <p>Image Preview:</p>
+                        <img 
+                            src={preview}
+                            alt="Image Preview"
                         />
+                    </div>
+                )}
+                
+                {cryptPreview && (
+                    <div>
+                        <div>
+                            <p>Crypt Image Preview:</p>
+                            <img
+                                src={cryptPreview}
+                                alt="Crypt Image Preview"
+                            />
+                            
+                        </div>
                         
                     </div>
-                    <button onClick={saveCrypt}>Click to Save</button>
-                </div>
-            )}
+                )}
+            </div>
+
+            {cryptPreview && <button onClick={saveCrypt}>Click to Save</button>}
+            
         </div>
     )
 }

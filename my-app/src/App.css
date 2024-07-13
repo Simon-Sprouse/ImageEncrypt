@@ -6,7 +6,7 @@
 .App * {
     font-size: calc(10px + 2vmin);
     text-align: center;
-    margin: 0 auto;
+    margin: 5px auto;
 }
 
 .Header h1 {
@@ -18,5 +18,16 @@
     justify-content: center;
 }
 
+.SideBySide { 
+    display: flex;
+    justify-content: center;
+}
 
+button {
+    padding: 10px;
+}
+
+button.active { 
+    background-color: grey;
+}
 
